@@ -455,20 +455,23 @@
                         return {
                             restrict: 'E',
                             require: '^ngModel',
+                            scope: {
+                                ngFarbtasticOptions: '='
+                            },
                             link: function($scope, $element, $attrs, ngModel) {
                                 var farbtastic;
 
-                                ngModel.$render = function(){
+                                ngModel.$render = function() {
                                     if (!farbtastic) {
                                         farbtastic = new Farbtastic($element, function(color) {
                                             safeApply($scope, function() {
                                                 ngModel.$setViewValue(color);
                                             });
-                                        }, {
+                                        }, $.extend({
                                             color: ngModel.$viewValue
-                                        });
+                                        }, $scope.ngFarbtasticOptions));
                                     }
-                                    else{
+                                    else {
                                         farbtastic.setColor(ngModel.$viewValue);
                                     }
                                 }
